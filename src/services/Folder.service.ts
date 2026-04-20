@@ -1,7 +1,8 @@
 import fs from "fs"
 import moment from "moment-timezone";
 import { Transaction } from "sequelize";
-import { v7 as uuidv7 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
+// import { v7 as uuidv7 } from "uuid";
 import { model } from "../models";
 import { HttpError } from "../utils/http-error";
 import StorageService from "./Storage.service";
@@ -116,7 +117,8 @@ const create = async (data: FolderCreationData, transaction: Transaction) => {
     }
 
     const folder = await model.folder.create({
-        FolderID: uuidv7(),
+        // FolderID: uuidv7()
+        FolderID: uuidv4(),
         ParentID: data.parent_id,
         Name: data.name,
         Path: parentPath ?? null,
