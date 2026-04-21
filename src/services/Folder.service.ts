@@ -225,8 +225,17 @@ const destroy = async (folder_id: string, transaction: Transaction) => {
     const folder = fetchedFolder.get({ plain: true }) as Folder
     const folderPath = safeJoin(folder.Path, folder_id)
 
+    if (!fs.existsSync(folderPath)) throw new HttpError("Folder not found on disk", 404, "FOLDER_MISSING_ON_DISK")
     // await fetchedFolder.destroy({ transaction })
     // await fsp.rm(folderPath, { recursive: true })
+
+    try {
+        await fsp.rm(folderPath, { recursive: true, force: true })
+    } catch (error) {
+        throw new HttpError("Failed to delete folder from disk.", 500, "FOLDER_DELETE_FAILED")
+    }
+
+    return await fetchedFolder.destroy({ transaction })
 }
 
 export default {
