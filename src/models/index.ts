@@ -40,7 +40,9 @@ Permission.belongsToMany(Role, {
 
 Folder.hasMany(Folder, {
     foreignKey: "ParentID",
-    as: "folders"
+    as: "folders",
+    onDelete: "CASCADE",
+    hooks: true
 })
 
 Folder.belongsTo(Folder, {
@@ -50,7 +52,9 @@ Folder.belongsTo(Folder, {
 
 Folder.hasMany(File, {
     foreignKey: "FolderID",
-    as: "files"
+    as: "files",
+    onDelete: "CASCADE",
+    hooks: true
 })
 
 File.belongsTo(Folder, {

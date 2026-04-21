@@ -7,6 +7,7 @@ import { model } from "../models";
 import { HttpError } from "../utils/http-error";
 import StorageService from "./Storage.service";
 import { safeJoin } from "../utils/path";
+import fsp from "fs/promises";
 
 type FolderCreationData = {
     parent_id: string | null;
@@ -91,7 +92,8 @@ interface Folder {
 const create = async (data: FolderCreationData, transaction: Transaction) => {
     const folderExists = await model.folder.findOne({
         where: {
-            Name: data.name
+            Name: data.name,
+            ParentID: data.parent_id
         }, transaction
     })
 
@@ -213,10 +215,25 @@ const getAll = async () => {
     return await model.folder.findAll() as unknown as Folder[]
 }
 
+const destroy = async (folder_id: string, transaction: Transaction) => {
+    const fetchedFolder = await model.folder.findByPk(folder_id, {
+        transaction
+    })
+
+    if (!fetchedFolder) throw new HttpError("Folder not found.", 404, "FOLDER_NOT_FOUND")
+
+    const folder = fetchedFolder.get({ plain: true }) as Folder
+    const folderPath = safeJoin(folder.Path, folder_id)
+
+    // await fetchedFolder.destroy({ transaction })
+    // await fsp.rm(folderPath, { recursive: true })
+}
+
 export default {
     get,
     getPath,
     create,
     download,
-    getAll
+    getAll,
+    destroy
 }

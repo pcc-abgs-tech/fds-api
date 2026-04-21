@@ -32,6 +32,7 @@ router.get("/folders/:id/download", FolderController.download)
 router.get("/folders/:id", FolderController.get)
 router.post("/folders", FolderController.create)
 router.post("/folders/:id/upload", storage.array("files"), FileController.upload)
+router.delete("/folders/:id", FolderController.destroy)
 
 router.get("/files/:id/download", FileController.download)
 router.delete("/files/:id", FileController.destroy)

@@ -6,6 +6,7 @@ import fs from "fs"
 import path from "path"
 import { arch } from "os"
 import FileService from "../services/File.service"
+import { Folder } from "../models/Folder.model"
 
 const tryCatchHandler = tryCatch(DB)
 
@@ -118,9 +119,21 @@ const download = tryCatchHandler(async (request, response, next, transaction) =>
     await archive.finalize()
 })
 
+const destroy = tryCatchHandler(async (request, response, next, transaction) => {
+    const id = String(request.params.id)
+
+    const x = await FolderService.destroy(id, transaction)
+
+    return response.status(200).json({
+        status: "success",
+        message: "Folder has been successfully deleted.",
+    })
+})
+
 export default {
     get,
     getAll,
     create,
-    download
+    download,
+    destroy
 }

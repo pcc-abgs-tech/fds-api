@@ -20,7 +20,11 @@ const init = async () => {
         app.use(express.urlencoded({ extended: true }))
         app.use(cookieParser())
         app.use(cors({
-            origin: ["http://localhost:4069"],
+            origin: [
+                String(process.env.DEV_URL),
+                String(process.env.LOCAL_URL),
+                String(process.env.LIVE_URL)
+            ],
             credentials: true,
             optionsSuccessStatus: 200
         }))
@@ -33,7 +37,7 @@ const init = async () => {
             console.log(`\x1b[32m[ READY ]\x1b[0m http://${HOST}:${PORT}`)
         })
     } catch (error) {
-        console.error("[ ERROR ]", error)
+        console.error(`\x1b[31m[ ERROR ]\x1b[0m`)
     }
 }
 
