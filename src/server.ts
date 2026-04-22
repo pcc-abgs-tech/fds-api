@@ -5,7 +5,7 @@ import DB from "./config/database"
 import router from "./config/routes"
 import { HOST, PORT } from "./config/server"
 import { ErrorHandler } from "./middlewares/error.middleware"
-import cors, { CorsOptions } from "cors"
+import cors from "cors"
 
 dotenv.config()
 
@@ -19,11 +19,12 @@ const init = async () => {
         app.use(express.json())
         app.use(express.urlencoded({ extended: true }))
         app.use(cookieParser())
+
         app.use(cors({
             origin: [
-                String(process.env.DEV_URL),
-                String(process.env.LOCAL_URL),
-                String(process.env.LIVE_URL)
+                String(process.env.DEV_APP_URL),
+                String(process.env.LOCAL_APP_URL),
+                String(process.env.LIVE_APP_URL)
             ],
             credentials: true,
             optionsSuccessStatus: 200

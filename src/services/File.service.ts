@@ -1,6 +1,7 @@
 import { DateOnlyDataType, Transaction } from "sequelize";
 import moment from "moment-timezone";
-import { v7 as uuidv7 } from "uuid";
+// import { v7 as uuidv7 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 import { model } from "../models";
 import FolderService from "./Folder.service";
 import { HttpError } from "../utils/http-error";
@@ -37,7 +38,8 @@ const upload = async (data: UploadData, transaction: Transaction) => {
     }
     
     const filesToUpload = data.files.map(file => ({
-        FileID: uuidv7(),
+        // FileID: uuidv7(),
+        FileID: uuidv4(),
         FolderID: data.folder_id === "root" ? null : data.folder_id,
         Name: file.originalname,
         MimeType: file.mimetype,
