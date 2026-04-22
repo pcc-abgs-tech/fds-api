@@ -23,7 +23,7 @@ const init = async () => {
         app.use(cors({
             origin: [
                 String(process.env.APP_URL),
-                `http://${String(process.env.HOST)}:${String(process.env.PORT)}`
+                String(process.env.APP_URL_LOCAL)
             ],
             credentials: true,
             optionsSuccessStatus: 200
